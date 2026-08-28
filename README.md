@@ -4,7 +4,7 @@ LiquidityLens is an experimental, AI-assisted liquidity risk analysis platform. 
 
 > **Demonstration using synthetic data. No RBC proprietary data is used.** This is an independent portfolio project inspired by the RBC GRM-BSLR Data & AI Intern opportunity. It is not affiliated with or endorsed by RBC.
 
-## The demo story
+## What to try
 
 The prototype is deliberately organized around one workflow a reviewer can understand in under a minute:
 

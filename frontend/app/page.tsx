@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Governance } from "@/components/governance";
-import { Activity, BookOpen, CircleGauge, LayoutDashboard, ShieldCheck, TriangleAlert } from "@/components/icons";
+import { BookOpen, CircleGauge, LayoutDashboard, ShieldCheck, TriangleAlert } from "@/components/icons";
 import { Investigation } from "@/components/investigation";
 import { LcrChart } from "@/components/lcr-chart";
 import { MetricCard } from "@/components/metric-card";
@@ -13,7 +13,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export default function Home() {
   const [data, setData] = useState<DashboardData>(demoData);
-  const [live, setLive] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/api/dashboard`)
@@ -21,8 +20,8 @@ export default function Home() {
         if (!response.ok) throw new Error("API unavailable");
         return response.json();
       })
-      .then((payload: DashboardData) => { setData(payload); setLive(true); })
-      .catch(() => setLive(false));
+      .then((payload: DashboardData) => setData(payload))
+      .catch(() => undefined);
   }, []);
 
   return (
@@ -35,17 +34,11 @@ export default function Home() {
           <a href="#investigation"><BookOpen size={17} /> Evidence</a>
           <a href="#governance"><ShieldCheck size={17} /> AI governance</a>
         </nav>
-        <div className="sidebar-foot">
-          <span className={`connection-dot ${live ? "live" : ""}`} />
-          <div><strong>{live ? "Risk engine connected" : "Demo snapshot"}</strong><small>{live ? "Live deterministic API" : "API optional"}</small></div>
-        </div>
       </aside>
 
       <main id="top">
-        <div className="disclaimer"><ShieldCheck size={14} /> Demonstration using synthetic data. No RBC proprietary data used.</div>
         <header className="topbar">
           <div><span className="eyebrow">Liquidity risk oversight</span><h1>Good morning, Analyst.</h1><p>Here’s what changed across the liquidity position.</p></div>
-          <div className="as-of"><span>Position date</span><strong>{new Date(`${data.as_of}T12:00:00`).toLocaleDateString("en-CA", { month: "long", day: "numeric", year: "numeric" })}</strong></div>
         </header>
 
         <section className="metrics-grid">
@@ -69,7 +62,7 @@ export default function Home() {
         <Investigation data={data} />
         <Governance data={data} />
 
-        <footer><span><span className="brand-mark small">L</span> LiquidityLens</span><p>Independent portfolio prototype · Not a regulatory calculator</p><span><Activity size={13} /> Explainable by design</span></footer>
+        <footer><span><span className="brand-mark small">L</span> LiquidityLens</span></footer>
       </main>
     </div>
   );
